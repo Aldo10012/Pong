@@ -13,18 +13,24 @@ class GameScene: SKScene {
     // MARK: Peoperties
     
     // Nodes
-    var playerNode: SKNode?
-    var enemyNode: SKNode?
-    var ball: SKNode?
+    var playerNode = SKSpriteNode()
+    var enemyNode = SKSpriteNode()
+    var ball = SKSpriteNode()
     
     
     // MARK: Life Cycle
     override func didMove(to view: SKView) {
-        self.playerNode = childNode(withName: "player")!
-        self.enemyNode = childNode(withName: "enemy")!
-        self.ball = childNode(withName: "ball")!
+        playerNode = self.childNode(withName: "player") as! SKSpriteNode
+        enemyNode = self.childNode(withName: "enemy") as! SKSpriteNode
+        ball = self.childNode(withName: "ball") as! SKSpriteNode
 
+        ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
         
+        let boarder = SKPhysicsBody(edgeLoopFrom: self.frame)
+        boarder.friction = 0
+        boarder.restitution = 0
+        
+        self.physicsBody = boarder
     }
     
     
