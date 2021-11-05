@@ -17,6 +17,13 @@ class GameScene: SKScene {
     var enemyNode = SKSpriteNode()
     var ball = SKSpriteNode()
     
+    // Bools
+    var playerWins: Bool?
+    
+    // Scores   [playerScore, enemyScore]
+    var playerScore: Int = 0
+    var enemyScore: Int = 0
+    
     
     // MARK: Life Cycle
     override func didMove(to view: SKView) {
@@ -24,13 +31,11 @@ class GameScene: SKScene {
         enemyNode = self.childNode(withName: "enemy") as! SKSpriteNode
         ball = self.childNode(withName: "ball") as! SKSpriteNode
 
+        configurePhysicsBody()
+        
         ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
         
-        let boarder = SKPhysicsBody(edgeLoopFrom: self.frame)
-        boarder.friction = 0
-        boarder.restitution = 0
-        
-        self.physicsBody = boarder
+        startGame()
     }
     
     
@@ -39,6 +44,7 @@ class GameScene: SKScene {
         let moveEnemy = SKAction.moveTo(x: ball.position.x, duration: 0.25)
         
         enemyNode.run(moveEnemy)
+        checkIfSomeoneMissedTheBall()
     }
 }
 
@@ -64,5 +70,46 @@ extension GameScene {
             let mvoePlayer = SKAction.moveTo(x: touchLocation.x, duration: 0.25)
             playerNode.run(mvoePlayer)
         }
+    }
+}
+
+// MARK: Game Mechanics
+extension GameScene {
+    
+    func startGame() {
+        playerScore = 0
+        enemyScore = 0
+    }
+    
+    func checkIfSomeoneMissedTheBall() {
+        
+        /// enemy missed ball, player gets pooint
+        if ball.position.y > enemyNode.position.y {
+            playerScore += 1
+            backToCenter()
+            print("player scored a point")
+            print("SCORES: player \(playerScore), enemy \(enemyScore)")
+            
+        }
+        /// player missed ball, enemy gets pooint
+        else if ball.position.y < playerNode.position.y {
+            enemyScore += 1
+            backToCenter()
+            print("enemy scored a point")
+            print("SCORES: player \(playerScore), enemy \(enemyScore)")
+        }
+    }
+    
+    func backToCenter() {
+        ball.position = CGPoint(x: 0, y: 0)
+    }
+    
+    
+    func configurePhysicsBody() {
+        let boarder = SKPhysicsBody(edgeLoopFrom: self.frame)
+        boarder.friction = 0
+        boarder.restitution = 0
+        
+        self.physicsBody = boarder
     }
 }
