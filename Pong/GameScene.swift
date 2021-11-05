@@ -5,6 +5,7 @@
 //  Created by Alberto Dominguez on 11/5/21.
 //
 
+import Foundation
 import SpriteKit
 import GameplayKit
 
@@ -87,7 +88,7 @@ extension GameScene {
         if ball.position.y > enemyNode.position.y {
             playerScore += 1
             backToCenter()
-            print("player scored a point")
+            applyNewImpulse()
             print("SCORES: player \(playerScore), enemy \(enemyScore)")
             
         }
@@ -95,13 +96,29 @@ extension GameScene {
         else if ball.position.y < playerNode.position.y {
             enemyScore += 1
             backToCenter()
-            print("enemy scored a point")
+            applyNewImpulse()
             print("SCORES: player \(playerScore), enemy \(enemyScore)")
         }
     }
     
     func backToCenter() {
         ball.position = CGPoint(x: 0, y: 0)
+    }
+    
+    func applyNewImpulse() {
+        // a^2 + b^2 = c^2
+        // dx-1, dy=b, hyp=c
+        
+        let hyp = 200.squareRoot()
+        let dx = Double.random(in: -hyp...hyp)
+        let dy = (200 - pow(dx, 2)).squareRoot()
+        
+        let c = pow(dx,2) + pow(dy,2)
+        print(c)
+        
+        
+        ball.physicsBody?.applyImpulse(CGVector(dx: dx, dy: dy))
+        
     }
     
     
@@ -113,3 +130,38 @@ extension GameScene {
         self.physicsBody = boarder
     }
 }
+
+
+// MARK: Math
+/*
+ 
+ applyNewImpulse()
+ Math to create vectors with random angle but with same speed.
+ 
+          *       c^2 = a^2  + b^2
+         **       c^2 = 10^2 + 10^2
+   c   *  *       c^2 = 100  + 100
+     *    * b     c^2 = 200
+   *      *         c = √200
+ **********         c ≈ 14.142 or 200.squareRoot()
+      a
+ 
+ a=10, b=10
+ a=dx, b=dy
+ 
+ Vectors require dx and dy (same as a & b)
+ thy hyposonuse MUST ALWAYS be √200
+ 
+ let hyp = √200
+ 
+ -hyp ≤ a ≤ hyp
+ 
+ c^2 = a^2 + b^2
+ 200 = a^2 + b^2
+ 200 - a^2 = b^2
+ 200 - (dx)^2 = (dy)^2
+ dy = (200 - (dx)^2).squareRoot()
+ 
+ 
+ */
+
