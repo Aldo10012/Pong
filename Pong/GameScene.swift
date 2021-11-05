@@ -36,21 +36,33 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        let moveEnemy = SKAction.moveTo(x: ball.position.x, duration: 0.25)
+        
+        enemyNode.run(moveEnemy)
     }
 }
 
 
 // MARK: Touches
 extension GameScene {
+    /// when user touches screen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("hi")
+                
+        for touch in touches {
+            let touchLocation = touch.location(in: self)
+            
+            let mvoePlayer = SKAction.moveTo(x: touchLocation.x, duration: 0.25)
+            playerNode.run(mvoePlayer)
+        }
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("hi")
-    }
-    
+    /// when user touches and moves finger (drags)
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("hi")
+        for touch in touches {
+            let touchLocation = touch.location(in: self)
+            
+            let mvoePlayer = SKAction.moveTo(x: touchLocation.x, duration: 0.25)
+            playerNode.run(mvoePlayer)
+        }
     }
 }
