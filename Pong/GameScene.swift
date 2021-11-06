@@ -99,7 +99,6 @@ extension GameScene {
             playerScoreLabel.text = "\(playerScore)"
             backToCenter()
             applyNewImpulse(winner: playerNode)
-            print("SCORES: player \(playerScore), enemy \(enemyScore)")
             
         }
         /// player missed ball, enemy gets pooint
@@ -108,7 +107,6 @@ extension GameScene {
             enemyScoreLabel.text = "\(enemyScore)"
             backToCenter()
             applyNewImpulse(winner: enemyNode)
-            print("SCORES: player \(playerScore), enemy \(enemyScore)")
         }
     }
     
@@ -122,7 +120,9 @@ extension GameScene {
         case playerNode:
             let vactors: [CGVector] = [
                 CGVector(dx: -10, dy: -10),
-                CGVector(dx:  10, dy: -10)
+                CGVector(dx:  10, dy: -10),
+                CGVector(dx:  -5, dy: -5*7.squareRoot()),
+                CGVector(dx:   5, dy: -5*7.squareRoot())
             ]
             
             ball.physicsBody?.applyImpulse(vactors.randomElement()!)
@@ -130,7 +130,9 @@ extension GameScene {
         case enemyNode:
             let vactors: [CGVector] = [
                 CGVector(dx: -10, dy: 10),
-                CGVector(dx: +10, dy: 10)
+                CGVector(dx:  10, dy: 10),
+                CGVector(dx:  -5, dy: 5*7.squareRoot()),
+                CGVector(dx:   5, dy: 5*7.squareRoot())
             ]
             
             ball.physicsBody?.applyImpulse(vactors.randomElement()!)
@@ -147,3 +149,4 @@ extension GameScene {
         self.physicsBody = boarder
     }
 }
+
