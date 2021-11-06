@@ -18,6 +18,10 @@ class GameScene: SKScene {
     var enemyNode = SKSpriteNode()
     var ball = SKSpriteNode()
     
+    // Label
+    var playerScoreLabel = SKLabelNode()
+    var enemyScoreLabel = SKLabelNode()
+    
     // Bools
     var playerWins: Bool?
     
@@ -31,6 +35,9 @@ class GameScene: SKScene {
         playerNode = self.childNode(withName: "player") as! SKSpriteNode
         enemyNode = self.childNode(withName: "enemy") as! SKSpriteNode
         ball = self.childNode(withName: "ball") as! SKSpriteNode
+        playerScoreLabel = self.childNode(withName: "playerScorelabel") as! SKLabelNode
+        enemyScoreLabel = self.childNode(withName: "enemyScorelabel") as! SKLabelNode
+
 
         configurePhysicsBody()
         
@@ -80,6 +87,8 @@ extension GameScene {
     func startGame() {
         playerScore = 0
         enemyScore = 0
+        playerScoreLabel.text = "\(playerScore)"
+        enemyScoreLabel.text = "\(enemyScore)"
     }
     
     func checkIfSomeoneMissedTheBall() {
@@ -87,6 +96,7 @@ extension GameScene {
         /// enemy missed ball, player gets pooint
         if ball.position.y > enemyNode.position.y {
             playerScore += 1
+            playerScoreLabel.text = "\(playerScore)"
             backToCenter()
             applyNewImpulse(winner: playerNode)
             print("SCORES: player \(playerScore), enemy \(enemyScore)")
@@ -95,6 +105,7 @@ extension GameScene {
         /// player missed ball, enemy gets pooint
         else if ball.position.y < playerNode.position.y {
             enemyScore += 1
+            enemyScoreLabel.text = "\(enemyScore)"
             backToCenter()
             applyNewImpulse(winner: enemyNode)
             print("SCORES: player \(playerScore), enemy \(enemyScore)")
