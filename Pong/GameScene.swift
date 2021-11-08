@@ -108,6 +108,10 @@ extension GameScene {
             backToCenter()
             applyNewImpulse(winner: enemyNode)
         }
+        
+        if playerScore == 5 || enemyScore == 5 {
+            presentGameOverScene()
+        }
     }
     
     func backToCenter() {
@@ -147,6 +151,12 @@ extension GameScene {
         boarder.restitution = 0
         
         self.physicsBody = boarder
+    }
+    
+    func presentGameOverScene() {
+        let gameOverScene = SKScene(fileNamed: "GameOverScene")
+        gameOverScene?.scaleMode = .aspectFill
+        view?.presentScene(gameOverScene)
     }
 }
 
