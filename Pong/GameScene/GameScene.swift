@@ -29,6 +29,9 @@ class GameScene: SKScene {
     var playerScore: Int = 0
     var enemyScore: Int = 0
     
+    // soudio
+    var pongSound: SKAction?
+    
     
     // MARK: Life Cycle
     override func didMove(to view: SKView) {
@@ -37,11 +40,9 @@ class GameScene: SKScene {
         ball = self.childNode(withName: "ball") as! SKSpriteNode
         playerScoreLabel = self.childNode(withName: "playerScorelabel") as! SKLabelNode
         enemyScoreLabel = self.childNode(withName: "enemyScorelabel") as! SKLabelNode
-
+        pongSound = playPongSound()
 
         configurePhysicsBody()
-        
-        ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
         
         startGame()
     }
@@ -81,25 +82,15 @@ extension GameScene {
     }
 }
 
-// MARK: Game Mechanics
+// MARK: Collisions
 extension GameScene {
-    
-    func startGame() {
-        playerScore = 0
-        enemyScore = 0
-        playerScoreLabel.text = "\(playerScore)"
-        enemyScoreLabel.text = "\(enemyScore)"
-    }
-    
     func checkIfSomeoneMissedTheBall() {
-        
         /// enemy missed ball, player gets pooint
         if ball.position.y > enemyNode.position.y {
             playerScore += 1
             playerScoreLabel.text = "\(playerScore)"
             backToCenter()
             applyNewImpulse(winner: playerNode)
-            
         }
         /// player missed ball, enemy gets pooint
         else if ball.position.y < playerNode.position.y {
@@ -112,6 +103,23 @@ extension GameScene {
         if playerScore == 5 || enemyScore == 5 {
             presentGameOverScene()
         }
+    }
+    
+    func checkIfBallCollidedWithObject() {
+        // if ball collides with anything, make pong sound
+    }
+}
+
+// MARK: Game Mechanics
+extension GameScene {
+    
+    func startGame() {
+        playerScore = 0
+        enemyScore = 0
+        playerScoreLabel.text = "\(playerScore)"
+        enemyScoreLabel.text = "\(enemyScore)"
+        
+        ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
     }
     
     func backToCenter() {
@@ -158,5 +166,12 @@ extension GameScene {
         gameOverScene?.scaleMode = .aspectFill
         view?.presentScene(gameOverScene)
     }
+    
+    // MARK: Audio
+    func playPongSound() -> SKAction {
+        let explosionSound = SKAction.playSoundFileNamed("pong.wav", waitForCompletion: false)
+        return explosionSound
+    }
+    
 }
 

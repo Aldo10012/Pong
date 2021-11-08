@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		639CB20D2739D6D70091B8E5 /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 639CB20C2739D6D70091B8E5 /* GameOverScene.sks */; };
+		639CB2112739DBE00091B8E5 /* pong.wav in Resources */ = {isa = PBXBuildFile; fileRef = 639CB2102739DBE00091B8E5 /* pong.wav */; };
+		639CB2142739E49E0091B8E5 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639CB2132739E49E0091B8E5 /* GameOverScene.swift */; };
 		63BF2FFE2735CC8D00273DF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF2FFD2735CC8D00273DF2 /* AppDelegate.swift */; };
 		63BF30002735CC8D00273DF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 63BF2FFF2735CC8D00273DF2 /* GameScene.sks */; };
 		63BF30022735CC8D00273DF2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 63BF30012735CC8D00273DF2 /* Actions.sks */; };
@@ -20,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		639CB20C2739D6D70091B8E5 /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
+		639CB2102739DBE00091B8E5 /* pong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pong.wav; sourceTree = "<group>"; };
+		639CB2132739E49E0091B8E5 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		63BF2FFA2735CC8D00273DF2 /* Pong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BF2FFD2735CC8D00273DF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63BF2FFF2735CC8D00273DF2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -42,6 +46,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		639CB2122739E2140091B8E5 /* GameScene */ = {
+			isa = PBXGroup;
+			children = (
+				63BF2FFF2735CC8D00273DF2 /* GameScene.sks */,
+				63BF30032735CC8D00273DF2 /* GameScene.swift */,
+			);
+			path = GameScene;
+			sourceTree = "<group>";
+		};
+		639CB2152739E57A0091B8E5 /* GameOverScene */ = {
+			isa = PBXGroup;
+			children = (
+				639CB20C2739D6D70091B8E5 /* GameOverScene.sks */,
+				639CB2132739E49E0091B8E5 /* GameOverScene.swift */,
+			);
+			path = GameOverScene;
+			sourceTree = "<group>";
+		};
 		63BF2FF12735CC8D00273DF2 = {
 			isa = PBXGroup;
 			children = (
@@ -62,14 +84,14 @@
 			isa = PBXGroup;
 			children = (
 				63BF2FFD2735CC8D00273DF2 /* AppDelegate.swift */,
-				639CB20C2739D6D70091B8E5 /* GameOverScene.sks */,
-				63BF2FFF2735CC8D00273DF2 /* GameScene.sks */,
+				639CB2152739E57A0091B8E5 /* GameOverScene */,
+				639CB2122739E2140091B8E5 /* GameScene */,
 				63BF30012735CC8D00273DF2 /* Actions.sks */,
-				63BF30032735CC8D00273DF2 /* GameScene.swift */,
 				63BF30052735CC8D00273DF2 /* GameViewController.swift */,
 				63BF30072735CC8D00273DF2 /* Main.storyboard */,
 				63BF300A2735CC8E00273DF2 /* Assets.xcassets */,
 				63BF300C2735CC8E00273DF2 /* LaunchScreen.storyboard */,
+				639CB2102739DBE00091B8E5 /* pong.wav */,
 			);
 			path = Pong;
 			sourceTree = "<group>";
@@ -132,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				639CB2112739DBE00091B8E5 /* pong.wav in Resources */,
 				63BF30092735CC8D00273DF2 /* Main.storyboard in Resources */,
 				63BF30002735CC8D00273DF2 /* GameScene.sks in Resources */,
 				63BF300B2735CC8E00273DF2 /* Assets.xcassets in Resources */,
@@ -150,6 +173,7 @@
 			files = (
 				63BF30042735CC8D00273DF2 /* GameScene.swift in Sources */,
 				63BF30062735CC8D00273DF2 /* GameViewController.swift in Sources */,
+				639CB2142739E49E0091B8E5 /* GameOverScene.swift in Sources */,
 				63BF2FFE2735CC8D00273DF2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
