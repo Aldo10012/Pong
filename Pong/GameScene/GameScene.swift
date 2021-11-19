@@ -28,10 +28,7 @@ class GameScene: SKScene {
     // Scores   [playerScore, enemyScore]
     var playerScore: Int = 0
     var enemyScore: Int = 0
-    
-    // soudio
-    var pongSound: SKAction?
-    
+        
     
     // MARK: Life Cycle
     override func didMove(to view: SKView) {
@@ -40,8 +37,8 @@ class GameScene: SKScene {
         ball = self.childNode(withName: "ball") as! SKSpriteNode
         playerScoreLabel = self.childNode(withName: "playerScorelabel") as! SKLabelNode
         enemyScoreLabel = self.childNode(withName: "enemyScorelabel") as! SKLabelNode
-        pongSound = playPongSound()
 
+        physicsWorld.contactDelegate = self
         configurePhysicsBody()
         
         startGame()
@@ -62,7 +59,6 @@ class GameScene: SKScene {
 extension GameScene {
     /// when user touches screen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-                
         for touch in touches {
             let touchLocation = touch.location(in: self)
             
@@ -82,7 +78,7 @@ extension GameScene {
     }
 }
 
-// MARK: Collisions
+// MARK: Respawn ball
 extension GameScene {
     func checkIfSomeoneMissedTheBall() {
         /// enemy missed ball, player gets pooint
@@ -100,13 +96,13 @@ extension GameScene {
             applyNewImpulse(winner: enemyNode)
         }
         
-        if playerScore == 5 || enemyScore == 5 {
-            presentGameOverScene()
+        if playerScore == 5 {
+            presentGameOverScene(withTitle: "You Win!")
         }
-    }
-    
-    func checkIfBallCollidedWithObject() {
-        // if ball collides with anything, make pong sound
+        if enemyScore == 5 {
+            presentGameOverScene(withTitle: "Game Over")
+        }
+        
     }
 }
 
@@ -153,25 +149,77 @@ extension GameScene {
         }
     }
     
+    
+    func presentGameOverScene(withTitle title: String) {
+        let gameOverScene = GameOverScene(fileNamed: "GameOverScene")!
+        gameOverScene.title = title
+        
+        gameOverScene.scaleMode = .aspectFill
+        view?.presentScene(gameOverScene)
+    }
+    
+    
+}
+
+// MARK: Physics Bodies
+extension GameScene {
     func configurePhysicsBody() {
         let boarder = SKPhysicsBody(edgeLoopFrom: self.frame)
         boarder.friction = 0
         boarder.restitution = 0
         
         self.physicsBody = boarder
+        
+        // Setting up edge Physics
+        self.physicsBody?.categoryBitMask = PhysicsCatagory.Edge
+        self.physicsBody?.collisionBitMask = PhysicsCatagory.Ball
+        self.physicsBody?.contactTestBitMask = PhysicsCatagory.Ball
+        
+        // Setting up Ball Physics
+        ball.physicsBody?.categoryBitMask = PhysicsCatagory.Ball
+        ball.physicsBody?.collisionBitMask = PhysicsCatagory.Paddle | PhysicsCatagory.Edge
+        ball.physicsBody?.contactTestBitMask = PhysicsCatagory.Paddle | PhysicsCatagory.Edge
+        
+        // set up Paddle physics
+        playerNode.physicsBody?.categoryBitMask = PhysicsCatagory.Paddle
+        playerNode.physicsBody?.collisionBitMask = PhysicsCatagory.Ball
+        playerNode.physicsBody?.contactTestBitMask = PhysicsCatagory.Ball
+        
+        enemyNode.physicsBody?.categoryBitMask = PhysicsCatagory.Paddle
+        enemyNode.physicsBody?.collisionBitMask = PhysicsCatagory.Ball
+        enemyNode.physicsBody?.contactTestBitMask = PhysicsCatagory.Ball
     }
+}
+
+// MARK: SKPhysicsContactDelegate
+extension GameScene: SKPhysicsContactDelegate {
     
-    func presentGameOverScene() {
-        let gameOverScene = SKScene(fileNamed: "GameOverScene")
-        gameOverScene?.scaleMode = .aspectFill
-        view?.presentScene(gameOverScene)
-    }
-    
-    // MARK: Audio
-    func playPongSound() -> SKAction {
-        let explosionSound = SKAction.playSoundFileNamed("pong.wav", waitForCompletion: false)
-        return explosionSound
+    func didBegin(_ contact: SKPhysicsContact) {
+        self.run(Audio.playSoundEffect(.pong))
     }
     
 }
 
+
+// MARK: Physics Model
+
+struct PhysicsCatagory {
+    static let None:    UInt32 = 0       // 0000000 0
+    static let Ball:    UInt32 = 0b1     // 0000001 1
+    static let Paddle:  UInt32 = 0b10    // 0000010 2
+    static let Edge:    UInt32 = 0b100   // 0000100 4
+}
+
+// MARK: Audio Model
+
+struct Audio {
+    enum AudioFile: String {
+        case pong = "pong.wav"
+    }
+    
+    static func playSoundEffect(_ sound: AudioFile) -> SKAction {
+        let audio = SKAction.playSoundFileNamed(sound.rawValue, waitForCompletion: false)
+        return audio
+    }
+    
+}
